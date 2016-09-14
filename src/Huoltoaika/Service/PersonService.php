@@ -5,6 +5,8 @@ namespace Huoltoaika\Service;
 use Doctrine\ORM\EntityManager;
 use Huoltoaika\Entity\Person;
 use Doctrine\ORM\EntityRepository;
+use PhpOption\Option;
+use PhpOption\Some;
 
 class PersonService
 {
@@ -32,5 +34,20 @@ class PersonService
         $this->em->persist($person);
         $this->em->flush();
         return $person;
+    }
+
+    public function findByName($firstName, $lastName): Option {
+
+        return Option::fromValue($this->repository->findOneBy([
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+        ]));
+    }
+
+    public function findOrCreate($firstName, $lastName): Person
+    {
+        return $this->findByName($firstName, $lastName)->getOrCall(function () use ($firstName, $lastName) {
+            return $this->createPerson($firstName, $lastName);
+        });
     }
 }
