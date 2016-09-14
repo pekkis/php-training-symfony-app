@@ -1,0 +1,39 @@
+<?php
+
+namespace Application\Migrations;
+
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20160913154339 extends AbstractMigration
+{
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('CREATE TABLE booking (id INT AUTO_INCREMENT NOT NULL, customer_id INT NOT NULL, car_id INT NOT NULL, start DATETIME NOT NULL, end DATETIME NOT NULL, INDEX IDX_E00CEDDE9395C3F3 (customer_id), INDEX IDX_E00CEDDEC3C6F69F (car_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE person (id INT AUTO_INCREMENT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE booking ADD CONSTRAINT FK_E00CEDDE9395C3F3 FOREIGN KEY (customer_id) REFERENCES person (id)');
+        $this->addSql('ALTER TABLE booking ADD CONSTRAINT FK_E00CEDDEC3C6F69F FOREIGN KEY (car_id) REFERENCES car (id)');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE booking DROP FOREIGN KEY FK_E00CEDDE9395C3F3');
+        $this->addSql('DROP TABLE booking');
+        $this->addSql('DROP TABLE person');
+    }
+}
