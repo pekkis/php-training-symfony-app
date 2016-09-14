@@ -7,3 +7,11 @@ services:
     services.car:
         class: Huoltoaika\Service\CarService
         arguments: ["@doctrine.orm.default_entity_manager"]
+
+    services.booking:
+        class: Huoltoaika\Service\BookingService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    services.person:
+        class: Huoltoaika\Service\PersonService
+        arguments: ["@doctrine.orm.default_entity_manager"]

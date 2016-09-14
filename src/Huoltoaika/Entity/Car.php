@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Huoltoaika\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +44,8 @@ class Car {
     {
         $this->make = $make;
         $this->model = $model;
+
+        $this->bookings = new ArrayCollection();
     }
 
     /**

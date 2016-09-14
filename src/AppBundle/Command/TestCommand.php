@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityManager;
 use Huoltoaika\Entity\Booking;
 use Huoltoaika\Entity\Car;
 use Huoltoaika\Entity\Person;
+use Huoltoaika\Service\BookingService;
+use Huoltoaika\Service\CarService;
+use Huoltoaika\Service\PersonService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,26 +33,26 @@ class TestCommand extends ContainerAwareCommand
         /** @var EntityManager $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
-        $car = new Car('Honda', 'Civic');
-        $em->persist($car);
+        /** @var BookingService $bookingService */
+        $bookingService = $this->getContainer()->get('services.booking');
 
-        $person = new Person('Gaylord', 'Lohiposki');
-        $em->persist($person);
+        /** @var CarService $carService */
+        $carService = $this->getContainer()->get('services.car');
 
-        $booking = new Booking(
+        /** @var PersonService $personService */
+        $personService = $this->getContainer()->get('services.person');
+
+        $car = $carService->createCar('Honda', 'Civic');
+        $person = $personService->createPerson('Gaylord', 'Lohiposki');
+
+        $booking = $bookingService->createBooking(
             new \DateTime('2015-09-10 08:00:00'),
             new \DateTime('2015-09-10 12:00:00'),
             $person,
             $car
         );
 
-        var_dump($booking);
-
         \Doctrine\Common\Util\Debug::dump($booking);
-
-        $em->persist($booking);
-        $em->flush();
-
         die();
 
 

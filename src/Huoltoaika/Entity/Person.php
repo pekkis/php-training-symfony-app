@@ -2,6 +2,7 @@
 
 namespace Huoltoaika\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,5 +42,7 @@ class Person {
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+
+        $this->bookings = new ArrayCollection();
     }
 }
